@@ -1,3 +1,19 @@
+import os
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from threading import Thread
+
+# Dummy server to make Render free tier happy
+class DummyServer(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is running")
+
+def run_server():
+    port = int(os.environ.get("PORT", 8080))
+    HTTPServer(("0.0.0.0", port), DummyServer).serve_forever()
+
+Thread(target=run_server, daemon=True).start()
 # ═══════════════════════════════════════════════════════════════
 #   📚 Abdulla Qahhor Educational Telegram Bot
 #   Author   : University Project
